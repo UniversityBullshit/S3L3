@@ -119,6 +119,10 @@ std::ostream &operator<<(std::ostream &os, const Reminder &reminder) {
     return os;
 }
 
+//std::ofstream &operator<<(std::ofstream &out, const Reminder &reminder) {
+//
+//}
+
 Reminder *Reminder::operator+(const Reminder &reminder) {
     Reminder* result = nullptr;
     char *concat_message = new char[StrLen(this->message) + StrLen(reminder.message) + 2];

@@ -21,5 +21,6 @@ void Assigment(Reminder **reminders, const int reminders_count);
 void PreIntocreting(Reminder **reminders, const int reminders_count);
 void PostIntocreting(Reminder **reminders, const int reminders_count);
 void Cast(Reminder **reminders, const int reminders_count);
+void WriteToFile(Reminder **reminders, const int reminders_count);
 
 #endif  // HEADERS_HEADER_H_

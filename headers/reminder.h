@@ -19,6 +19,7 @@ public:
     void SetMessage(char* message);
 
     friend std::ostream& operator<<(std::ostream& os, const Reminder& reminder);
+//    friend std::ofstream& operator<<(std::ofstream& out, const Reminder& reminder);
 
     Reminder* operator+(const Reminder& reminder);
     friend Reminder* operator-(const Reminder& reminder_1, const Reminder& reminder_2);

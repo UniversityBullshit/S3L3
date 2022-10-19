@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "../headers/reminder.h"
 #include "../headers/header.h"
 
@@ -59,7 +60,10 @@ bool Menu(Reminder ***reminders, int *const reminders_count) {
         case 9:  // Cast to char*
             Cast(*reminders, *reminders_count);
             break;
-        case 10:  // Exit
+        case 10: // Write to file
+            WriteToFile(*reminders, *reminders_count);
+            break;
+        case 11:  // Exit
             status = false;
             break;
         default:
@@ -84,7 +88,8 @@ void PrintMenu() {
               << "7. Prefix Intocreting\n"
               << "8. Postfix Intocreting\n"
               << "9. Cast to char*\n"
-              << "10. Exit\n"
+              << "10. Write to file\n"
+              << "11. Exit\n"
               << "> ";
 }
 
@@ -330,5 +335,22 @@ void Cast(Reminder **reminders, const int reminders_count) {
         char* string = static_cast<char*>(*reminders[reminder]);
         std::cout << "Casted message: " << string << std::endl;
         delete[] string;
+    }
+}
+
+void WriteToFile(Reminder **reminders, const int reminders_count) {
+    if (reminders == nullptr) {
+        std::cout << "No reminders to write" << std::endl;
+    } else {
+        std::ofstream out;
+        out.open("out.txt");
+        if (out.is_open()) {
+            for (int i = 0; i < reminders_count; i++) {
+                out << i + 1
+                    << ". "
+                    << *reminders[i]
+                    << std::endl;
+            }
+        }
     }
 }
