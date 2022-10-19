@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+./build/*
+
+#IDE
+.vscode/*
+.idea/*
+
+#OS
+./.DS_Store
