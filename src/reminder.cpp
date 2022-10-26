@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../headers/reminder.h"
 
+#define TIME_SIZE 8
 
 Reminder::Reminder() {
     this->hours = 0;
@@ -91,31 +92,34 @@ char *Reminder::StrCpy(char *dest, const char *src) {
     return result;
 }
 
+void Reminder::StrReverse(char* string) {
+    int len = StrLen(string);
+    for (int i = 0; i < len / 2; i++) {
+        char tmp = string[i];
+        string[i] = string[len - i - 1];
+        string[len - i - 1] = tmp;
+    }
+}
+
+char* Reminder::TimeToString(int number) {
+    char* string = new char[3];
+
+    if (number < 10) {
+        string[0] = '0';
+        string[1] = number + '0';
+        string[2] = '\0';
+    } else {
+        string[2] = '\0';
+        string[1] = number % 10 + '0';
+        number /= 10;
+        string[0] = number + '0';
+    }
+
+    return string;
+}
+
 std::ostream &operator<<(std::ostream &os, const Reminder &reminder) {
-    if (reminder.hours < 10) {
-        os << "0" << reminder.hours << ":";
-    } else {
-        os << reminder.hours << ":";
-    }
-
-    if (reminder.minutes < 10) {
-        os << "0" << reminder.minutes << ":";
-    } else {
-        os << reminder.minutes << ":";
-    }
-
-    if (reminder.seconds < 10) {
-        os << "0" << reminder.seconds;
-    } else {
-        os << reminder.seconds;
-    }
-
-    if (reminder.message != nullptr) {
-        os << " '" << reminder.message << "'";
-    } else {
-        os << " Null";
-    }
-
+    os << static_cast<char*>(reminder);
     return os;
 }
 
@@ -218,7 +222,28 @@ Reminder Reminder::operator++(int) {
 }
 
 Reminder::operator char*() const {
-    char *result = new char[StrLen(this->message) + 1];
-    StrCpy(result, this->message);
+    char* result = new char[TIME_SIZE + StrLen(this->message) + 2];  // "12:30:00 Message"
+
+    int k = 0;  // Number of written symbols
+
+    char* time = TimeToString(this->hours);
+    StrCpy(result + k, time);
+    k += 2;
+    delete[] time;
+    result[k++] = ':';
+
+    time = TimeToString(this->minutes);
+    StrCpy(result + k, time);
+    k += 2;
+    delete[] time;
+    result[k++] = ':';
+
+    time = TimeToString(this->seconds);
+    StrCpy(result + k, time);
+    k += 2;
+    delete[] time;
+    result[k++] = ' ';
+
+    StrCpy(result + k, this->message);
     return result;
 }

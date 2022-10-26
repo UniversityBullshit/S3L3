@@ -36,6 +36,8 @@ private:
 
     static int StrLen(char* string);
     static char* StrCpy(char* dest, const char* src);
+    static void StrReverse(char* string);
+    static char* TimeToString(int number);
 };
 
 #endif  // HEADERS_REMINDER_H_
