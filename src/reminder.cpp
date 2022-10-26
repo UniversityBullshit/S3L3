@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "../headers/reminder.h"
 
 #define TIME_SIZE 8
@@ -119,13 +120,16 @@ char* Reminder::TimeToString(int number) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Reminder &reminder) {
-    os << static_cast<char*>(reminder);
+    char* string = static_cast<char*>(reminder);
+    os << string;
+    delete[] string;
     return os;
 }
 
-//std::ofstream &operator<<(std::ofstream &out, const Reminder &reminder) {
-//
-//}
+std::fstream &operator<<(std::fstream &out, const Reminder &reminder) {
+    out.write((char*)&reminder, sizeof(Reminder));
+    return out;
+}
 
 Reminder *Reminder::operator+(const Reminder &reminder) {
     Reminder* result = nullptr;

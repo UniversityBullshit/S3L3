@@ -63,7 +63,10 @@ bool Menu(Reminder ***reminders, int *const reminders_count) {
         case 10: // Write to file
             WriteToFile(*reminders, *reminders_count);
             break;
-        case 11:  // Exit
+        case 11: // Write to binary file
+            BWriteToFile(*reminders, *reminders_count);
+            break;
+        case 12:  // Exit
             status = false;
             break;
         default:
@@ -89,7 +92,8 @@ void PrintMenu() {
               << "8. Postfix Intocreting\n"
               << "9. Cast to char*\n"
               << "10. Write to file\n"
-              << "11. Exit\n"
+              << "11. Write to binary file\n"
+              << "12. Exit\n"
               << "> ";
 }
 
@@ -346,10 +350,24 @@ void WriteToFile(Reminder **reminders, const int reminders_count) {
         out.open("out.txt");
         if (out.is_open()) {
             for (int i = 0; i < reminders_count; i++) {
-                out << i + 1
-                    << ". "
-                    << *reminders[i]
-                    << std::endl;
+                out << *reminders[i] << std::endl;
+            }
+        }
+    }
+}
+
+void BWriteToFile(Reminder **reminders, const int reminders_count) {
+    if (reminders == nullptr) {
+        std::cout << "No reminders to write" << std::endl;
+    } else {
+        std::fstream out;
+        out.open("out.bin", std::ios::out | std::ios::binary);
+        if (out.is_open()) {
+            for (int i = 0; i < reminders_count; i++) {
+                out << *reminders[i];
+                if (i < reminders_count - 1) {
+                    out << std::endl;
+                }
             }
         }
     }
