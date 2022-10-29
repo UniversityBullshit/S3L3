@@ -29,4 +29,14 @@
 # Executables
 *.exe
 *.out
+*.bin
 *.app
+/build/*
+*.txt
+
+#IDE
+.vscode/*
+.idea/*
+
+#OS
+/.DS_Store
