@@ -198,6 +198,9 @@ Reminder* operator-(const Reminder& reminder_1, const Reminder& reminder_2) {
         }
 
         diff_message[diff] = '\0';
+    } else {
+        diff_message = new char[1];
+        diff_message[0] = '\0';
     }
 
     result = new Reminder(
