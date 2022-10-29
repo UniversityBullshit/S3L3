@@ -66,7 +66,10 @@ bool Menu(Reminder ***reminders, int *const reminders_count) {
         case 11: // Write to binary file
             BWriteToFile(*reminders, *reminders_count);
             break;
-        case 12:  // Exit
+        case 12: // Read from binary file
+            BReadFromFile(reminders, reminders_count);
+            break;
+        case 13:  // Exit
             status = false;
             break;
         default:
@@ -93,7 +96,8 @@ void PrintMenu() {
               << "9. Cast to char*\n"
               << "10. Write to file\n"
               << "11. Write to binary file\n"
-              << "12. Exit\n"
+              << "12. Read from binary file\n"
+              << "13. Exit\n"
               << "> ";
 }
 
@@ -350,7 +354,10 @@ void WriteToFile(Reminder **reminders, const int reminders_count) {
         out.open("out.txt");
         if (out.is_open()) {
             for (int i = 0; i < reminders_count; i++) {
-                out << *reminders[i] << std::endl;
+                out << *reminders[i];
+                if (i < reminders_count - 1) {
+                    out << std::endl;
+                }
             }
         }
     }
@@ -363,12 +370,24 @@ void BWriteToFile(Reminder **reminders, const int reminders_count) {
         std::fstream out;
         out.open("out.bin", std::ios::out | std::ios::binary);
         if (out.is_open()) {
+            out.write((char*)&reminders_count, sizeof(int));
             for (int i = 0; i < reminders_count; i++) {
                 out << *reminders[i];
-                if (i < reminders_count - 1) {
-                    out << std::endl;
-                }
             }
+        }
+    }
+}
+
+void BReadFromFile(Reminder ***reminders, int* const reminders_count) {
+    std::fstream in;
+    in.open("out.bin", std::ios::in | std::ios::binary);
+    if (in.is_open()) {
+        int sz;
+        in.read((char*)&sz, sizeof(int));
+        for (int i = 0; i < sz; i++) {
+            Reminder* reminder = new Reminder();
+            in >> *reminder;
+            AddReminder(reminders, reminders_count, reminder);
         }
     }
 }

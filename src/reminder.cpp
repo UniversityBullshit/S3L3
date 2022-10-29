@@ -88,7 +88,6 @@ int Reminder::StrLen(char *string) {
 
 char *Reminder::StrCpy(char *dest, const char *src) {
     char *result = dest;
-
     while ((*dest++ = *src++) != '\0');
     return result;
 }
@@ -127,8 +126,31 @@ std::ostream &operator<<(std::ostream &os, const Reminder &reminder) {
 }
 
 std::fstream &operator<<(std::fstream &out, const Reminder &reminder) {
-    out.write((char*)&reminder, sizeof(Reminder));
+    out.write((char*)&reminder.hours, sizeof(int));
+    out.write((char*)&reminder.minutes, sizeof(int));
+    out.write((char*)&reminder.seconds, sizeof(int));
+    int len = Reminder::StrLen(reminder.message);
+    out.write((char*)&len, sizeof(int));
+    for (int i = 0; i < len; i++) {
+        out.write((char*)&reminder.message[i], sizeof(reminder.message[i]));
+    }
     return out;
+}
+
+std::fstream &operator>>(std::fstream& in, Reminder& reminder) {
+    in.read((char*)&reminder.hours, sizeof(int));
+    in.read((char*)&reminder.minutes, sizeof(int));
+    in.read((char*)&reminder.seconds, sizeof(int));
+
+    int len;
+    in.read((char*)&len, sizeof(int));
+    reminder.message = new char[len + 1];
+
+    for (int i = 0; i < len; i++) {
+        in.read((char*)&reminder.message[i], sizeof(reminder.message[i]));
+    }
+
+    return in;
 }
 
 Reminder *Reminder::operator+(const Reminder &reminder) {

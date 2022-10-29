@@ -20,6 +20,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Reminder& reminder);
     friend std::fstream& operator<<(std::fstream& out, const Reminder& reminder);
+    friend std::fstream& operator>>(std::fstream& in, Reminder& reminder);
 
     Reminder* operator+(const Reminder& reminder);
     friend Reminder* operator-(const Reminder& reminder_1, const Reminder& reminder_2);

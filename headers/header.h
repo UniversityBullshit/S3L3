@@ -23,5 +23,6 @@ void PostIntocreting(Reminder **reminders, const int reminders_count);
 void Cast(Reminder **reminders, const int reminders_count);
 void WriteToFile(Reminder **reminders, const int reminders_count);
 void BWriteToFile(Reminder ** reminders, const int reminders_count);
+void BReadFromFile(Reminder ***reminders, int* const reminders_count);
 
 #endif  // HEADERS_HEADER_H_
